@@ -29,6 +29,12 @@ public class ProductoController {
         }
         return productoRepository.findByCategoria(categoria.toUpperCase());
     }
+    
+        // GET /api/productos/disponibles -> solo lo que se puede pedir hoy
+    @GetMapping("/disponibles")
+    public List<Producto> listarDisponibles() {
+        return productoRepository.findByDisponibleTrue();
+    }
 
     // GET /api/productos/3 -> un producto puntual
     @GetMapping("/{id}")

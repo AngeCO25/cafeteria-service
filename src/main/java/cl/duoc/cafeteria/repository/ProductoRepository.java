@@ -12,4 +12,6 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     // Spring genera la consulta solo, a partir del nombre del metodo
     List<Producto> findByCategoria(String categoria);
+    // Devuelve solo los productos con disponible = true
+    List<Producto> findByDisponibleTrue();
 }
