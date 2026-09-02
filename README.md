@@ -56,3 +56,4 @@ Usamos Claude de las siguientes formas:
 -Nos aclaro conceptos de lo visto en clases.
 
 ## Conclusiones
+Iván: Al estar acostumbrado a trabajar de forma individual mis proyecto utilizando Trunk-based Development, pasar a GitFlow en este proyecto me mostro el valor de separar los entornos al trabajar en equipo. La dinámica de los Pull Requests fue muy efectiva, recibir comentarios y solicitudes de cambio antes de integrar el código me permitió ver en la práctica cómo este flujo actúa como un filtro de calidad. Respecto al CI/CD, aunque ya tenía un acercamiento previo, reafirmé la utilidad de automatizar la integración continua para agilizar procesos. Finalmente la simulación del hotfix me ayudó a comprender la importancia de tener un mecanismo de emergencia para corregir errores críticos directamente en producción, sin interrumpir el desarrollo de las funcionaledes que siguen avanzando en paralelo.
