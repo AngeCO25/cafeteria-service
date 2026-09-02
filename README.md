@@ -20,11 +20,19 @@ Usamos conventional commits que quiere decir que cada mensaje empieza con el tip
 2. develop: rama donde se reaalizan los cambios antes de pasar a main.
 3. feature/ModuloDisponibles: Agrega el endpoint que muestra solo los productos disponibles para pedir.
 4. feature/ModuloVenta: Agrega el modelo de datos para resgitrar las ventas.
-5. hotfix/: Corrige el error en el cálculo del total de un pedido. 
+5. hotfix/CorregirCalculo: Corrige el error en el cálculo del total de un pedido. 
 
 ## Naming de ramas
 - **Formato:** PascalCase
 - **Ejemplo:** feature/ModuloVenta
+
+## Estructura de Carpetas
+El proyecto sigue la arquitectura estándar de Spring Boot para mantener el código ordenado y separado por responsabilidades:
+- `src/main/java/.../model/`: Entidades y representación de datos (ej. Producto, Pedido, Venta).
+- `src/main/java/.../repository/`: Interfaces para la persistencia de datos en la base de datos.
+- `src/main/java/.../service/`: Lógica de negocio y validaciones.
+- `src/main/java/.../controller/`: Endpoints REST que exponen la API.
+- `.github/workflows/`: Archivos YAML de configuración para la automatización CI/CD con GitHub Actions.
 
 ## Justificación de elección modelo de ramificación: GitFlow
 Elegimos Gitflow porque el enunciado pide crear ramas main, develop, feature y hotfix que son ramas de GitFlow.
@@ -39,10 +47,12 @@ Automatizar la ejecucion de los test nos permite corroborar si hay errores al in
 
 Cada integrante del equipo configuro un workflow
 - **Ángela:** Corre los test automaticos cada vez que hace push a develop.
-- **Iván:**
+- **Iván:** Compila y ejecuta los test automaticos cada vez que se abre un Pull Request hacia la rama main.
 
 ## Uso de IA
 Usamos Claude de las siguientes formas:
 -Generó la base del código del microservicio a partir de la idea de negocio que elegimos con sus atributos. Nosotros probamos, ejecutamos y ajustamos.
 -Nos guió en el uso de Git y GitHub.
 -Nos aclaro conceptos de lo visto en clases.
+
+## Conclusiones
