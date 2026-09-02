@@ -28,7 +28,7 @@ public class PedidoService {
      * para poder probarlo en un test sin levantar toda la aplicacion.
      */
     public static int calcularTotal(int precio, int cantidad) {
-        return precio + cantidad;
+        return precio * cantidad;
     }
 
     public Pedido crear(NuevoPedidoRequest request) {
