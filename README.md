@@ -43,11 +43,11 @@ No elegimos TBD porque ese modelo integra todos los cambios directamente a main,
 Cada Pull request lo revisa el otro integrante del equipo antes de aprobarlo. Si falta algo, se usa 'Request changes' con un comentario explicando que falta. Cuando esta listo, se aprueba y se mezcla con develop o main segun corresponda.
 
 ## GitHub Actions(Workflows)
-Automatizar la ejecucion de los test nos permite corroborar si hay errores al instante que se sube un cambio, sin depender que alguien lo haga de forma manual.
+Automatizar tareas con workflows nos permite que ciertas acciones se ejecuten solas cada vez que hay un cambio, sin depender de que alguien se acuerde de hacerlas de forma manual.
 
-Cada integrante del equipo configuro un workflow
-- **Ángela:** Corre los test automaticos cada vez que hace push a develop.
-- **Iván:** Compila y ejecuta los test automaticos cada vez que se abre un Pull Request hacia la rama main.
+Cada integrante del equipo configuró un workflow que se ejecuta solo y muestra un mensaje en pantalla, para comprobar que la automatización funciona:
+- **Ángela:** Se ejecuta con cada push a la rama develop.
+- **Iván:** Se ejecuta con cada Pull Request hacia la rama main.
 
 ## Uso de IA
 Usamos Claude de las siguientes formas:
