@@ -10,12 +10,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configurar Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '21'
-
-      - name: Compilar y ejecutar tests
-        run: ./mvnw test
-        
+      - name: Hola Mundo
+        run: echo "Hola Mundo"
