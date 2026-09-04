@@ -1,0 +1,15 @@
+name: Validacion de Pull Request a Main - Ivan
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    name: Compilar y Testear
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Hola Mundo
+        run: echo "Hola Mundo - Validacion PR"
