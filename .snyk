@@ -1,0 +1,7 @@
+version: v1.25.0
+ignore:
+  SNYK-JAVA-ORGGLASSFISHJAXB-20883142:
+    - '*':
+        reason: No existe version corregida. El microservicio solo recibe JSON y no procesa XML externo.
+        expires: 2027-01-31T00:00:00.000Z
+patch: {}
