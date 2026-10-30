@@ -36,6 +36,9 @@ jobs:
       - name: Descargar el codigo
         uses: actions/checkout@v4
 
+      - name: Dar permiso de ejecucion a mvnw
+        run: chmod +x mvnw
+
       # Si encuentra vulnerabilidades altas o criticas, el pipeline se detiene
       - name: Ejecutar Snyk
         uses: snyk/actions/maven-3-jdk-21@master
@@ -98,3 +101,22 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          command_timeout: 20m
+          script: |
+            echo "Deploy iniciado - commit ${{ github.sha }}"
+
+            if [ ! -d "cafeteria-service" ]; then
+              git clone https://github.com/AngeCO25/cafeteria-service.git
+            fi
+
+            cd cafeteria-service
+            git fetch origin
+            git reset --hard origin/main
+
+            docker compose up -d --build --wait
+            docker compose ps
+
+            echo "Deploy terminado"
+
+      - name: Probar el microservicio desplegado
+        run: curl --fail http://${{ secrets.EC2_HOST }}:8080/api/productos
