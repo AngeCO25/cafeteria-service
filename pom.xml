@@ -23,6 +23,22 @@
         <java.version>21</java.version>
     </properties>
 
+    <!-- Version corregida de Jackson por vulnerabilidad critica detectada por Snyk -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>tools.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>3.1.8</version>
+            </dependency>
+            <dependency>
+                <groupId>tools.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>3.1.8</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <!-- Permite exponer endpoints REST que devuelven JSON -->
         <dependency>
