@@ -1,0 +1,127 @@
+name: Pipeline CI/CD cafeteria-service
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+
+  pruebas:
+    name: Pruebas unitarias
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el codigo
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Ejecutar pruebas
+        run: mvn clean test -B
+
+  snyk:
+    name: Analisis de seguridad con Snyk
+    runs-on: ubuntu-latest
+    needs: pruebas
+    steps:
+      - name: Descargar el codigo
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Instalar Snyk
+        run: npm install -g snyk
+
+      - name: Autenticar Snyk
+        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
+      # Si encuentra vulnerabilidades altas o criticas, el pipeline se detiene
+      - name: Ejecutar Snyk
+        run: snyk test --file=pom.xml --severity-threshold=high
+
+  sonar:
+    name: Analisis de calidad con SonarCloud
+    runs-on: ubuntu-latest
+    needs: pruebas
+    steps:
+      - name: Descargar el codigo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Instalar Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Ejecutar SonarCloud
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          mvn -B verify sonar:sonar \
+          -Dsonar.projectKey=AngeCO25_cafeteria-service \
+          -Dsonar.organization=angeco25 \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.token=$SONAR_TOKEN
+
+  docker:
+    name: Construir imagen Docker
+    runs-on: ubuntu-latest
+    needs: [snyk, sonar]
+    steps:
+      - name: Descargar el codigo
+        uses: actions/checkout@v4
+
+      # La imagen queda etiquetada con el commit que la origino
+      - name: Construir imagen
+        run: docker build -t cafeteria-service:${{ github.sha }} .
+
+      - name: Mostrar imagen creada
+        run: docker images cafeteria-service
+
+  despliegue:
+    name: Despliegue en AWS EC2
+    runs-on: ubuntu-latest
+    needs: docker
+    if: github.event_name != 'pull_request'
+    steps:
+      - name: Deploy a EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          command_timeout: 20m
+          script: |
+            echo "Deploy iniciado - commit ${{ github.sha }}"
+
+            if [ ! -d "cafeteria-service" ]; then
+              git clone https://github.com/AngeCO25/cafeteria-service.git
+            fi
+
+            cd cafeteria-service
+            git fetch origin
+            git reset --hard origin/main
+
+            docker compose up -d --build --wait
+            docker compose ps
+
+            echo "Deploy terminado"
+
+      - name: Probar el microservicio desplegado
+        run: curl --fail http://${{ secrets.EC2_HOST }}:8080/api/productos
