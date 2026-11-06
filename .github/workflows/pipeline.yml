@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Descargar el codigo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Instalar Java 21
         uses: actions/setup-java@v4
@@ -34,7 +34,7 @@ jobs:
     needs: pruebas
     steps:
       - name: Descargar el codigo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Dar permiso de ejecucion a mvnw
         run: chmod +x mvnw
@@ -53,7 +53,7 @@ jobs:
     needs: pruebas
     steps:
       - name: Descargar el codigo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -80,7 +80,7 @@ jobs:
     needs: [snyk, sonar]
     steps:
       - name: Descargar el codigo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # La imagen queda etiquetada con el commit que la origino
       - name: Construir imagen
